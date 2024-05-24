@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:33:29 by kethouve          #+#    #+#             */
-/*   Updated: 2024/05/06 16:02:21 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:28:18 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_strncmp(const char *s1, const char *s2, int n)
 
 	i = 0;
 	if (!s2)
-		return(1);
+		return (1);
 	if (n < 1)
 		return (0);
 	while (s1[i] == s2[i] && i < n && s1[i])
@@ -69,5 +69,45 @@ char	*ft_strdup(const char *s)
 		i++;
 	}
 	dest[i] = '\0';
+	return (dest);
+}
+
+char	*ft_strdup_quote(const char *s)
+{
+	int		quote_status;
+	int		i;
+	int		j;
+	int		k;
+	char	*dest;
+
+	quote_status = 0;
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (quote_analyse(s[i], &quote_status) == 1)
+			j++;
+		i++;
+	}
+	if (quote_status != 0 && (j % 2) != 0)
+		j--;
+	dest = malloc(sizeof(char) * (ft_strlen(s) - j + 1));
+	i = 0;
+	k = 0;
+	quote_status = 0;
+	while (s[i])
+	{
+		if (quote_analyse(s[i], &quote_status) == 1 && j != 0)
+		{
+			i++;
+			j--;
+		}
+		if (!s[i])
+			break ;
+		dest[k] = s[i];
+		i++;
+		k++;
+	}
+	dest[k] = '\0';
 	return (dest);
 }

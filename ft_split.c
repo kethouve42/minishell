@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 14:58:41 by kethouve          #+#    #+#             */
-/*   Updated: 2024/05/21 18:15:33 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:46:25 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ int	tabs_size(char const *s, char c)
 			j++;
 		}
 		else if (s[i] == c || ((s[i] == '>' || s[i] == '<') && s[i - 1] != ' '))
-				count = 0;
-		if ((s[i] == '>' && s[i + 1] == '>') || (s[i] == '<' && s[i + 1] == '<'))
+			count = 0;
+		if ((s[i] == '>' && s[i + 1] == '>')
+			|| (s[i] == '<' && s[i + 1] == '<'))
 			i += 2;
 		else
 			i++;
@@ -71,10 +72,10 @@ int	tabs_size(char const *s, char c)
 
 char	**ft_split_env(char const *s, char c)
 {
-	int			i;
-	int			j;
-	int				index;
-	char			**dest;
+	int		i;
+	int		j;
+	int		index;
+	char	**dest;
 
 	i = 5;
 	j = 0;
@@ -100,78 +101,29 @@ char	**ft_split_env(char const *s, char c)
 
 char	**ft_split(char const *s, char c)
 {
-	int		i;
-	int		j;
-	int		index;
+	t_split	*d_s;
 	char	**dest;
 
-	i = 0;
-	j = 0;
-	index = -1;
+	d_s = malloc(sizeof(t_split));
+	d_s->i = -1;
+	d_s->j = -1;
+	d_s->qs = 0;
+	d_s->index = -1;
 	dest = malloc((tabs_size(s, c) + 2) * sizeof(char *));
 	if (!s || !dest)
 		return (0);
-	while (i <= ft_strlen(s))
+	while (++d_s->i <= ft_strlen(s))
 	{
-		if (s[i] != c && index < 0)
-			index = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
+		quote_analyse(s[d_s->i], &d_s->qs);
+		if (s[d_s->i] != c && d_s->index < 0)
+			d_s->index = d_s->i;
+		else if ((s[d_s->i] == c || d_s->i == ft_strlen(s))
+			&& d_s->index >= 0 && d_s->qs == 0)
 		{
-			dest[j] = put_words(s, index, i);
-			index = -1;
-			j++;
+			dest[++d_s->j] = put_words(s, d_s->index, d_s->i);
+			d_s->index = -1;
 		}
-		i++;
 	}
-	dest[j] = NULL;
-	return (dest);
-}
-
-char	**ft_split2(char const *s, char c)
-{
-	int			i;
-	int			j;
-	int				index;
-	char			**dest;
-
-	i = 0;
-	j = 0;
-	index = -1;
-	dest = malloc((tabs_size(s, c) + 2) * sizeof(char *));
-	//printf("s: %s\n\n", s);
-	if (!s || !dest)
-		return (0);
-	while (i <= ft_strlen(s))
-	{
-		if (s[i] != c && index < 0)
-			index = i;
-		else if ((s[i] == c || s[i] == '|' || s[i] == '>' || s[i] == '<' || i == ft_strlen(s)) && index >= 0)
-		{
-			//printf("enter: %c\n", s[i]);
-			dest[j] = put_words(s, index, i);
-			if (i != ft_strlen(s) && (s[i + 1] == '>' || s[i + 1] == '<' || s[i] == '>'))
-			{
-				//printf("s: %c, 1\n\n", s[i]);
-				if(s[i] == ' ' || s[i + 1] == '<' || (s[i + 1] == '>' && s[i] != '>'))
-				{
-				//	printf("s:%c, 2\n\n", s[i]);
-					i++;
-				//	printf("s:%c, 3\n\n", s[i]);
-				}
-				j++;
-				index = i;
-				if (s[i + 1] == '<' || s[i + 1] == '>')
-					i++;
-				//printf("s:%c, 4\n\n", s[i]);
-				dest[j] = put_words(s, index, (i + 1));
-				if (s[i] != '<' && s[i] != '>')
-					i--;
-			}
-			index = -1;
-			j++;
-		}
-		i++;
-	}
-	dest[j] = NULL;
-	return (dest);
+	dest[++d_s->j] = NULL;
+	return (free(d_s), dest);
 }

@@ -4,8 +4,13 @@ CFLAGS = -Wall -Wextra -Werror -g
 CFLAGS+ = -lreadline
 
 SRC =	ft_split.c    \
-		test.c    \
-		utils_ms.c
+		main.c    \
+		utils_ms.c \
+		Builtin.c \
+		utils_ms2.c \
+		ft_split2.c \
+		parse.c \
+		free_all.c
 
 OBJ = ${SRC:.c=.o}
 
