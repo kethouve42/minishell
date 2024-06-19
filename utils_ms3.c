@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 16:18:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/17 23:39:16 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/20 00:18:46 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	verif_operator(char ***cmd_temp2, t_ms *ms_data)
 			else if (ft_strncmp(cmd_temp2[i][j], "~", 1, 0) == 0)
 			{
 				free(cmd_temp2[i][j]);
-				cmd_temp2[i][j] = dup_var("$HOME", ms_data->envp);
+				cmd_temp2[i][j] = ft_strdup(ms_data->tilde);
 			}
 			else
 				cmd_temp2[i][j] = verif_stat_in_s(cmd_temp2[i][j], ms_data);

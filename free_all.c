@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 17:17:24 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/15 01:59:45 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/20 01:30:24 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_tab(char **tab)
 	int	i;
 
 	i = 0;
-	if (!tab)
+	if (tab == NULL)
 		return ;
 	while (tab[i])
 	{
@@ -56,5 +56,10 @@ void	free_struct(t_ms *ms_data)
 		free(ms_data->data->file2);
 	if (ms_data->data->keyword != NULL && ms_data->data->keyword[0] != '\0')
 		free(ms_data->data->keyword);
+	if (ms_data-> env != NULL)
+	{
+		free_tab(ms_data->env);
+		ms_data->env = NULL;
+	}
 	free(ms_data->data);
 }

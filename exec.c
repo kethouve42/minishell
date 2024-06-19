@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:58:02 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/19 17:22:09 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/20 01:34:18 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,6 @@ int	execution3(t_ms *ms_data)
 
 void	execution(t_ms *ms_data)
 {
-	signal(SIGINT, handle_sigint_child);
-	signal(SIGQUIT, SIG_IGN);
 	if (ms_data->data->cmd[0][0] == NULL)
 		return ;
 	if (execution3(ms_data) == 1)

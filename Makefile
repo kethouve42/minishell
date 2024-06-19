@@ -1,6 +1,6 @@
 
 
-NAME = minishell
+NAME = minishell_version_table
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 CFLAGS+ = -lreadline
@@ -13,7 +13,7 @@ SRC = use.c	\
 	free_all.c	\
 	ft_split.c	\
 	ft_split2.c	\
-	main.c	\
+	table.c	\
 	parse.c	\
 	pipex2.c	\
 	utils_ms.c	\

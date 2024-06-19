@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:39:51 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/19 17:21:59 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/20 01:34:30 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	get_temp_cmd(t_ms *ms_data, char *test)
 
 void	get_cmd(t_ms *ms_data, char *test)
 {
+	signal(SIGINT, handle_sigint_child);
+	signal(SIGQUIT, SIG_IGN);
 	ms_data->data = malloc(sizeof(t_cmd_file));
 	ms_data->data->keyword = NULL;
 	ms_data->data->n_cmd = 0;
@@ -56,11 +58,6 @@ void	get_cmd(t_ms *ms_data, char *test)
 	ms_data->wait_write = 0;
 	ms_data->only_heredoc = 0;
 	ms_data->data->cmd = NULL;
-	if (ms_data-> env != NULL)
-	{
-		free_tab(ms_data->env);
-		ms_data->env = NULL;
-	}
 	ms_data->env = get_env(ms_data->envp);
 	if (quote_in_word(test) == 1 || get_temp_cmd(ms_data, test) == 1)
 		return (free_struct(ms_data), free(test));
@@ -85,7 +82,7 @@ void	debut_minishell(t_ms *ms_data)
 		add_history(test);
 		if (test == NULL)
 		{
-			free_tab(ms_data->env);
+			free(ms_data->tilde);
 			free_tab(ms_data->envp);
 			free(ms_data);
 			free(test);
@@ -128,6 +125,7 @@ int	main(int argc, char **argv, char **envp)
 	ms_data = malloc(sizeof(t_ms));
 	ms_data->status = 0;
 	ms_data->env = NULL;
+	ms_data->tilde = NULL;
 	while (envp[i])
 		i++;
 	ms_data->envp = malloc(sizeof(char *) * (i + 1));
@@ -138,5 +136,6 @@ int	main(int argc, char **argv, char **envp)
 		ms_data->envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	ms_data->tilde = dup_var("$HOME", ms_data->envp);
 	debut_minishell(ms_data);
 }

@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:01:11 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/19 17:15:35 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/20 00:10:59 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_ms
 {
 	char		**envp;
 	char		**env;
+	char		*tilde;
 	int			put_in_file;
 	int			concat_file;
 	int			readfile;

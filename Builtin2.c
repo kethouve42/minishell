@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Builtin2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:00:50 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/14 14:37:51 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/20 01:32:56 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	new_exit2(t_pipe *pipee, t_ms *ms_data)
 
 void	new_exit(t_ms *ms_data)
 {
-	free_tab(ms_data->env);
+	free(ms_data->tilde);
 	free_tab(ms_data->envp);
 	free_struct(ms_data);
 	free(ms_data);
