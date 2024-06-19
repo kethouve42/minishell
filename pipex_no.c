@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:09:43 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/17 16:47:54 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/18 16:14:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,27 @@ void	exec_exec_no(t_pipe *pipee, t_ms *ms_data)
 	waitpid(pid1, &pipee->status, 0);
 }
 
+void    print_3_tab(char ***s)
+{
+    int    i;
+    int    j;
+
+    i = 0;
+    printf("---------------DEBUT-----------------\n\n");
+    while (s[i])
+    {
+        j = 0;
+        while (s[i][j])
+        {
+            printf("s[i:%d][j:%d] = %s\n", i, j, s[i][j]);
+            j++;
+        }
+        printf("__________________________________\n");
+        i++;
+    }
+    printf("\n\n---------The End----------------\n\n");
+}
+
 int	verif_no(t_ms *ms_data)
 {
 	int	i;
@@ -109,8 +130,23 @@ int	verif_no(t_ms *ms_data)
 	return (0);
 }
 
+int	verif_cmd_null(t_ms *ms_data)
+{
+	int i;
+
+	i = -1;
+	while (ms_data->data->cmd[++i])
+	{
+		if (ms_data->data->cmd[i][0] == NULL)
+			return (printf("cmds\n"), 1);
+	}
+	return (0);
+}
+
 int	verif_pash_exist(t_ms *ms_data, int i, int j)
 {
+	if (verif_cmd_null(ms_data) == 1)
+		return (free_struct(ms_data), 1);
 	if (ms_data->wait_write == 1)
 		wait_write(ms_data);
 	if (verif_no(ms_data) == 1)
