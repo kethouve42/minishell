@@ -1,16 +1,33 @@
+
+
 NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 CFLAGS+ = -lreadline
 
-SRC =	ft_split.c    \
-		main.c    \
-		utils_ms.c \
-		Builtin.c \
-		utils_ms2.c \
-		ft_split2.c \
-		parse.c \
-		free_all.c
+SRC = use.c	\
+	use2.c	\
+	pipex.c	\
+	Builtin.c	\
+	Builtin2.c	\
+	free_all.c	\
+	ft_split.c	\
+	ft_split2.c	\
+	main.c	\
+	parse.c	\
+	pipex2.c	\
+	utils_ms.c	\
+	utils_ms2.c	\
+	utils_ms3.c	\
+	exec.c	\
+	exec2.c	\
+	cmd.c	\
+	ft_itoa.c \
+	signal.c \
+	absolute.c \
+	pipex_no.c	\
+	pipex2_no.c	\
+	paste_var.c \
 
 OBJ = ${SRC:.c=.o}
 
@@ -28,4 +45,4 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 
-re:	fclean all
+re: fclean all
