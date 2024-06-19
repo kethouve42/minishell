@@ -6,47 +6,31 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 13:37:15 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/16 16:36:38 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:28:05 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern pid_t	g_pid1;
-
-void	print_3_tab(char ***s)
+void	print_status(t_ms *ms_data)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	printf("---------------DEBUT-----------------\n\n");
-	while (s[i])
-	{
-		j = 0;
-		while (s[i][j])
-		{
-			printf("s[i:%d][j:%d] = %s\n", i, j, s[i][j]);
-			j++;
-		}
-		printf("__________________________________\n");
-		i++;
-	}
-	printf("\n\n---------The End----------------\n\n");
+	printf("%d : commande introuvable\n", ms_data->status);
+	ms_data->status = 127;
 }
 
-void	handle_sigint(int sig)
+void	handle_sigint_child(int sig)
 {
 	(void)sig;
-	if (g_pid1 == 0)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else
-		printf("\n");
+	printf("\n");
+}
+
+void	handle_sigint_parent(int sig)
+{
+	(void)sig;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 char	**no_export(t_ms *ms_data, char *t)

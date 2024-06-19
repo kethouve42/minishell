@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 12:26:30 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/18 16:46:04 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/07 16:20:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ void	setexec(t_pipe *pipee, t_ms *ms_data)
 void	exec_exec(t_pipe *pipee, t_ms *ms_data)
 {
 	pid_t	pid1;
-	pid_t	pid2;
-	pid_t	pid3;
 
 	pid1 = fork();
 	if (pid1 == -1)
@@ -76,19 +74,17 @@ void	exec_exec(t_pipe *pipee, t_ms *ms_data)
 		start2(pipee, ms_data);
 	while (pipee->cmds[++pipee->j + 1])
 	{
-		pid2 = fork();
-		if (pid2 == -1)
+		pid1 = fork();
+		if (pid1 == -1)
 			return ;
-		if (pid2 == 0)
+		if (pid1 == 0)
 			mid2(pipee, ms_data);
 	}
-	pid3 = fork();
-	if (pid3 == -1)
+	pid1 = fork();
+	if (pid1 == -1)
 		return ;
-	if (pid3 == 0)
+	if (pid1 == 0)
 		end2(pipee, ms_data);
 	closee(pipee, ms_data, 1000, 3);
 	waitpid(pid1, &pipee->status, 0);
-	waitpid(pid2, &pipee->status, 0);
-	waitpid(pid3, &pipee->status, 0);
 }

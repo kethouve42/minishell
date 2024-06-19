@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:01:11 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/18 18:15:18 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:15:35 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,11 @@ void	wait_write(t_ms *ms_data);
 
 char	*ft_itoa(int n);
 
-void	handle_sigint(int sig);
+void	handle_sigint_parent(int sig);
+void	handle_sigint_child(int sig);
 void	handle_sigquit(int sig);
 void	get_signal(void);
+void	print_status(t_ms *ms_data);
 char	**no_export(t_ms *ms_data, char *t);
 void	print_3_tab(char ***s);
 

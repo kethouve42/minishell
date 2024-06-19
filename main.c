@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:39:51 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/19 15:36:11 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:21:59 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	get_temp_cmd(t_ms *ms_data, char *test)
 	i = -1;
 	cmd_temp = ft_split(test, '|');
 	while (cmd_temp[++i])
-	{
-		printf("temp[i]: %s\n", cmd_temp[i]);
 		ms_data->data->n_cmd++;
-	}
 	i = 0;
 	cmd_temp2 = malloc(sizeof(char **) * (ms_data->data->n_cmd + 2));
 	while (cmd_temp[i])
@@ -79,11 +76,11 @@ void	debut_minishell(t_ms *ms_data)
 {
 	char	*test;
 
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		g_pid1 = 0;
+		signal(SIGINT, handle_sigint_parent);
+		signal(SIGQUIT, SIG_IGN);
 		test = readline("\U0001F972 Minishell>");
 		add_history(test);
 		if (test == NULL)
@@ -96,7 +93,7 @@ void	debut_minishell(t_ms *ms_data)
 			break ;
 		}
 		else if (!ft_strncmp(test, "$?", 2, 0))
-			printf("%d\n", ms_data->status);
+			print_status(ms_data);
 		else if (test[0] != '\0')
 			get_cmd(ms_data, test);
 		else

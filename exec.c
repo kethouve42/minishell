@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:58:02 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/18 17:11:40 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/19 17:22:09 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,31 +80,6 @@ int	execution2(t_ms *ms_data, int i, t_pipe *pipee)
 	return (0);
 }
 
-int	execution5(t_ms *ms_data)
-{
-	int i;
-
-	i = -1;
-	if (ft_strncmp(ms_data->data->cmd[0][0], "export", 6, 1) == 0)
-	{
-		if (!ms_data->data->cmd[0][1])
-			return (new_env(ms_data), 1);
-		while (ms_data->data->cmd[0][++i])
-			ms_data->envp = new_export(ms_data, ms_data->data->cmd[0][i]);
-		return (1);
-	}
-	if (ft_strncmp(ms_data->data->cmd[0][0], "unset", 5, 1) == 0)
-	{
-		if (!ms_data->data->cmd[0][1])
-			return (1);
-		while (ms_data->data->cmd[0][++i])
-			ms_data->envp = new_unset(ms_data, ms_data->data->cmd[0][i],
-					ft_strjoin(ms_data->data->cmd[0][i], "="));
-		return (1);
-	}
-	return (0);
-}
-
 int	execution3(t_ms *ms_data)
 {
 	if (ms_data->only_heredoc == 1)
@@ -116,13 +91,30 @@ int	execution3(t_ms *ms_data)
 		if (ms_data->data->n_cmd == 1)
 			return (new_cd(ms_data->data->cmd[0][1], ms_data), 1);
 	}
-	if (execution5(ms_data) == 1)
+	if (ft_strncmp(ms_data->data->cmd[0][0], "export", 6, 1) == 0)
+	{
+		if (!ms_data->data->cmd[0][1])
+			return (new_env(ms_data), 1);
+		ms_data->envp = new_export(ms_data, ms_data->data->cmd[0][1]);
 		return (1);
+	}
+	if (ft_strncmp(ms_data->data->cmd[0][0], "unset", 5, 1) == 0)
+	{
+		if (!ms_data->data->cmd[0][1])
+			return (1);
+		ms_data->envp = new_unset(ms_data, ms_data->data->cmd[0][1],
+				ft_strjoin(ms_data->data->cmd[0][1], "="));
+		return (1);
+	}
 	return (0);
 }
 
 void	execution(t_ms *ms_data)
 {
+	signal(SIGINT, handle_sigint_child);
+	signal(SIGQUIT, SIG_IGN);
+	if (ms_data->data->cmd[0][0] == NULL)
+		return ;
 	if (execution3(ms_data) == 1)
 		return ;
 	if (verif(ms_data) == 1)

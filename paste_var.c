@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 17:06:22 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/18 17:50:34 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:21:06 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 void	place_var_in_s(char *s, char *var, char *dest, t_tri_index *t_i)
 {
-			t_i->i++;
-			while(s[t_i->i] && ((s[t_i->i] >= 'a' && s[t_i->i] <= 'z') || (s[t_i->i] >= 'A' && s[t_i->i] <= 'Z')
-				|| (s[t_i->i] >= '0' && s[t_i->i] <= '9')))
-				t_i->i++;
-			t_i->i--;
-			while (var[++t_i->k])
-				dest[++t_i->j] = var[t_i->k];
+	t_i->i++;
+	while (s[t_i->i] && ((s[t_i->i] >= 'a' && s[t_i->i] <= 'z')
+			|| (s[t_i->i] >= 'A' && s[t_i->i] <= 'Z')
+			|| (s[t_i->i] >= '0' && s[t_i->i] <= '9') || s[t_i->i] == '_'))
+		t_i->i++;
+	t_i->i--;
+	while (var[++t_i->k])
+		dest[++t_i->j] = var[t_i->k];
 }
 
 char	*next_var(char *s, char *var, int j, int flag)
 {
 	t_tri_index	*t_i;
+	int			quote_status;
+	char		*dest;
 
 	t_i = malloc(sizeof(t_tri_index));
-	int		quote_status;
-	char	*dest;
-
 	quote_status = 0;
 	dest = malloc(sizeof(char) * (ft_strlen(s) + ft_strlen(var) - j + 1));
 	t_i->j = -1;
@@ -39,7 +39,8 @@ char	*next_var(char *s, char *var, int j, int flag)
 	while (s[++t_i->i])
 	{
 		quote_analyse(s[t_i->i], &quote_status);
-		if (s[t_i->i] == '$' && (quote_status == 0 || quote_status == 2) && flag == 0)
+		if (s[t_i->i] == '$' && (quote_status == 0 || quote_status == 2)
+			&& flag == 0)
 		{
 			place_var_in_s(s, var, dest, t_i);
 			flag = 1;
@@ -59,16 +60,16 @@ char	*get_var(char *s, int i, char **envp, int *l)
 	int		j;
 
 	j = i - 1;
-	while((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z')
-		|| (s[i] >= '0' && s[i] <= '9'))
+	while ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z')
+		|| (s[i] >= '0' && s[i] <= '9') || s[i] == '_')
 	{
 		i++;
 	}
 	var = malloc(sizeof(char) * (i - j) + 1);
 	i = 0;
 	var[i++] = s[j++];
-	while((s[j] >= 'a' && s[j] <= 'z') || (s[j] >= 'A' && s[j] <= 'Z')
-		|| (s[j] >= '0' && s[j] <= '9'))
+	while ((s[j] >= 'a' && s[j] <= 'z') || (s[j] >= 'A' && s[j] <= 'Z')
+		|| (s[j] >= '0' && s[j] <= '9') || s[i] == '_')
 	{
 		var[i] = s[j];
 		i++;

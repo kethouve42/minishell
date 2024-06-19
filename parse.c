@@ -6,23 +6,25 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:19:17 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/19 15:36:38 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:21:42 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	put_cmd(t_ms *ms_data, char *cmd_temp2, t_tri_index *t_i)
+void	put_cmd(t_ms *ms_data, char ***ct2, t_tri_index *t_i)
 {
-	if (cmd_temp2 == NULL)
+	if (ct2[t_i->i][t_i->j] == NULL && ms_data->wait_write == 0)
 	{
 		t_i->j--;
 		return ;
 	}
-	if (quote_in_word(cmd_temp2) == 1)
-		ms_data->data->cmd[t_i->i][t_i->k] = ft_strdup(cmd_temp2);
+	if (ms_data->wait_write == 1)
+		t_i->j--;
+	if (quote_in_word(ct2[t_i->i][t_i->j]) == 1)
+		ms_data->data->cmd[t_i->i][t_i->k] = ft_strdup(ct2[t_i->i][t_i->j]);
 	else
-		ms_data->data->cmd[t_i->i][t_i->k] = dup_quote(cmd_temp2);
+		ms_data->data->cmd[t_i->i][t_i->k] = dup_quote(ct2[t_i->i][t_i->j]);
 	t_i->k++;
 }
 
@@ -35,7 +37,7 @@ void	type_file_in(t_ms *ms_data, char ***cmd_temp2, t_tri_index *t_i)
 		if (ft_strncmp(cmd_temp2[t_i->i][t_i->j - 1], "<>", 2, 0) == 0)
 		{
 			createfile(cmd_temp2[t_i->i][t_i->j], ms_data);
-			return (put_cmd(ms_data, cmd_temp2[t_i->i][t_i->j], t_i));
+			return (put_cmd(ms_data, cmd_temp2, t_i));
 		}
 		else if (ft_strncmp(cmd_temp2[t_i->i][t_i->j - 1], "<<", 2, 0) == 0)
 		{
@@ -52,7 +54,7 @@ void	type_file_in(t_ms *ms_data, char ***cmd_temp2, t_tri_index *t_i)
 		}
 		t_i->j++;
 	}
-	put_cmd(ms_data, cmd_temp2[t_i->i][t_i->j], t_i);
+	put_cmd(ms_data, cmd_temp2, t_i);
 }
 
 void	get_file_out(t_ms *ms_data, char ***cmd_temp2, t_tri_index *t_i)
@@ -82,26 +84,13 @@ void	get_file_out(t_ms *ms_data, char ***cmd_temp2, t_tri_index *t_i)
 		createfile(ms_data->data->file2, ms_data);
 }
 
-void	copy_var(t_ms *ms_data, char ***ct2, t_tri_index *t_i)
+void	cmd_plus_file(t_ms *ms_data, t_tri_index *t_i)
 {
-	char	*temp;
-
-	if (ft_strncmp(ct2[t_i->i][t_i->j], "$", 1, 1) == 0)
-		return ;
-	temp = dup_quote(ct2[t_i->i][t_i->j]);
-	if (ft_strncmp(temp, "$", 1, 1) == 0)
-	{
-		free(ct2[t_i->i][t_i->j]);
-		ct2[t_i->i][t_i->j] = ft_strdup(temp);
-		free(temp);
-		return ;
-	}
-	free(ct2[t_i->i][t_i->j]);
-	ct2[t_i->i][t_i->j] = dup_var(temp, ms_data->envp);
-	free(temp);
+	ms_data->data->cmd[t_i->i][t_i->k] = dup_quote(ms_data->data->file1);
+	free(ms_data->data->file1);
+	ms_data->data->file1 = NULL;
+	t_i->k++;
 }
-
-
 
 void	final_cmd(t_ms *ms_data, char ***ct2)
 {
@@ -110,7 +99,6 @@ void	final_cmd(t_ms *ms_data, char ***ct2)
 	t_i = malloc(sizeof (t_tri_index));
 	verif_var(ct2, t_i, ms_data->envp);
 	t_i->i = -1;
-	print_3_tab(ct2);
 	while (ct2[++t_i->i])
 	{
 		t_i->j = -1;
@@ -124,12 +112,10 @@ void	final_cmd(t_ms *ms_data, char ***ct2)
 				&& ft_strncmp(ct2[t_i->i][t_i->j], ">", 1, 0) != 0)
 				type_file_in(ms_data, ct2, t_i);
 		}
+		if (ms_data->data->file1 != NULL)
+			cmd_plus_file(ms_data, t_i);
 		ms_data->data->cmd[t_i->i][t_i->k] = NULL;
 	}
 	ms_data->data->cmd[t_i->i] = NULL;
-	print_3_tab(ms_data->data->cmd);
-	printf("file_in: %s\n", ms_data->data->file1);
-	printf("file_out: %s\n", ms_data->data->file2);
-	printf("keyword: %s\n", ms_data->data->keyword);
 	free(t_i);
 }
