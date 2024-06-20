@@ -28,6 +28,7 @@ SRC = use.c	\
 	pipex_no.c	\
 	pipex2_no.c	\
 	paste_var.c \
+	print_export.c \
 
 OBJ = ${SRC:.c=.o}
 

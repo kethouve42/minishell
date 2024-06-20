@@ -6,7 +6,7 @@
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:01:11 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/20 00:10:59 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/20 23:52:52 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,5 +176,7 @@ int		verif_no(t_ms *ms_data);
 int		verif_pash_exist(t_ms *ms_data, int i, int j);
 
 void	verif_var(char ***ct2, t_tri_index *t_i, char **envp);
+
+void	print_export(t_ms *ms_data);
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   table.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:39:51 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/20 01:34:30 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/21 00:53:18 by kethouve         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ void	debut_minishell(t_ms *ms_data)
 			free(test);
 			rl_clear_history();
 			break ;
+		}
+		else if (!ft_strncmp(test, "test", 2, 0))
+		{
+			print_export(ms_data);
+			free(test);
 		}
 		else if (!ft_strncmp(test, "$?", 2, 0))
 			print_status(ms_data);
