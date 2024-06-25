@@ -1,6 +1,6 @@
 
 
-NAME = minishell_version_table
+NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 CFLAGS+ = -lreadline

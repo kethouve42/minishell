@@ -24,14 +24,16 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-void swap(char **a, char **b)
+void	swap(char **a, char **b)
 {
-    char *temp = *a;
-    *a = *b;
-    *b = temp;
+	char	*temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
-void bubble_sort(char **export)
+void	bubble_sort(char **export)
 {
 	int	i;
 	int	sorted;

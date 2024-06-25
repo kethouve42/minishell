@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   table.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 17:39:51 by kethouve          #+#    #+#             */
-/*   Updated: 2024/06/21 00:53:18 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:38:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-pid_t	g_pid1;
 
 int	get_temp_cmd(t_ms *ms_data, char *test)
 {
@@ -75,7 +73,6 @@ void	debut_minishell(t_ms *ms_data)
 
 	while (1)
 	{
-		g_pid1 = 0;
 		signal(SIGINT, handle_sigint_parent);
 		signal(SIGQUIT, SIG_IGN);
 		test = readline("\U0001F972 Minishell>");
@@ -89,14 +86,9 @@ void	debut_minishell(t_ms *ms_data)
 			rl_clear_history();
 			break ;
 		}
-		else if (!ft_strncmp(test, "test", 2, 0))
-		{
-			print_export(ms_data);
-			free(test);
-		}
 		else if (!ft_strncmp(test, "$?", 2, 0))
 			print_status(ms_data);
-		else if (test[0] != '\0')
+		else if (test[0] != ' ' && test[0] != '\0')
 			get_cmd(ms_data, test);
 		else
 			free(test);

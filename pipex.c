@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-extern pid_t	g_pid1;
-
 void	child(t_pipe *pipee, t_ms *ms_data)
 {
 	if (ms_data->put_in_file == 1)
@@ -66,6 +64,7 @@ int	exec(char ***cmd, t_ms *ms_data)
 {
 	t_pipe	*pipee;
 	int		status;
+	pid_t	pid1;
 
 	status = 0;
 	pipee = malloc(sizeof(t_pipe));
@@ -73,12 +72,12 @@ int	exec(char ***cmd, t_ms *ms_data)
 	pipee->cmd = ft_strdup2(cmd[0]);
 	pipee->env = ms_data->env;
 	seearsh(pipee);
-	g_pid1 = fork();
-	if (g_pid1 == -1)
+	pid1 = fork();
+	if (pid1 == -1)
 		return (0);
-	if (g_pid1 == 0)
+	if (pid1 == 0)
 		child(pipee, ms_data);
-	waitpid(g_pid1, &status, 0);
+	waitpid(pid1, &status, 0);
 	if (ms_data->wait_write == 1)
 		unlink("Here_Docc");
 	free_tab (pipee->cmd);

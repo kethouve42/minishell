@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_no.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kethouve <kethouve@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:09:43 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/19 17:17:51 by kethouve         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:41:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern pid_t	g_pid1;
 
 void	child_no(t_pipe *pipee, t_ms *ms_data)
 {
@@ -40,17 +38,18 @@ int	exec_no(char ***cmd, t_ms *ms_data)
 {
 	t_pipe	*pipee;
 	int		status;
+	pid_t	pid1;
 
 	status = 0;
 	pipee = malloc(sizeof(t_pipe));
 	pipee->i = 0;
 	pipee->cmd = ft_strdup2(cmd[0]);
-	g_pid1 = fork();
-	if (g_pid1 == -1)
+	pid1 = fork();
+	if (pid1 == -1)
 		return (0);
-	if (g_pid1 == 0)
+	if (pid1 == 0)
 		child_no(pipee, ms_data);
-	waitpid(g_pid1, &status, 0);
+	waitpid(pid1, &status, 0);
 	if (ms_data->wait_write == 1)
 		unlink("Here_Docc");
 	free_tab (pipee->cmd);
@@ -111,6 +110,8 @@ int	verif_no(t_ms *ms_data)
 
 int	verif_pash_exist(t_ms *ms_data, int i, int j)
 {
+	if (verif_cmd_null(ms_data) == 1)
+		return (free_struct(ms_data), 1);
 	if (ms_data->wait_write == 1)
 		wait_write(ms_data);
 	if (verif_no(ms_data) == 1)

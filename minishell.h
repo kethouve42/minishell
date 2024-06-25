@@ -163,6 +163,7 @@ void	get_signal(void);
 void	print_status(t_ms *ms_data);
 char	**no_export(t_ms *ms_data, char *t);
 void	print_3_tab(char ***s);
+int		verif_export(char *cmd);
 
 void	verif_absolute_path(t_ms *ms_data);
 
@@ -178,5 +179,6 @@ int		verif_pash_exist(t_ms *ms_data, int i, int j);
 void	verif_var(char ***ct2, t_tri_index *t_i, char **envp);
 
 void	print_export(t_ms *ms_data);
+int		verif_cmd_null(t_ms *ms_data);
 
 #endif

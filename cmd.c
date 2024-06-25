@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 16:13:24 by marvin            #+#    #+#             */
-/*   Updated: 2024/06/14 14:39:26 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/25 10:25:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ char	*recup(char *cmd, char *mod)
 	int		i;
 	char	*temp;
 
-	i = 0;
-	while (cmd[i])
-	{
+	i = -1;
+	printf("%i", verif_export(cmd));
+	if (verif_export(cmd) == 1)
+		return (NULL);
+	while (cmd[++i])
 		if (cmd[i] == mod[0])
 			break ;
-		i++;
-	}
 	if (i == 0 || !cmd[i] ||!cmd[i + 1])
 		return (NULL);
 	temp = malloc(sizeof(char) * (i + 2));

@@ -42,3 +42,28 @@ char	**no_export(t_ms *ms_data, char *t)
 	free (t);
 	return (temp);
 }
+
+int	verif_export(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	if ((cmd[0] >= '0' && cmd[0] <= '9'))
+		return (1);
+	while (cmd[i])
+	{
+		if (cmd[i] >= '0' && cmd[i] <= '9')
+			i++;
+		else if (cmd[i] >= 'a' && cmd[i] <= 'z')
+			i++;
+		else if (cmd[i] >= 'A' && cmd[i] <= 'Z')
+			i++;
+		else if (cmd[i] == '_')
+			i++;
+		else if (cmd[i] == '=')
+			return (0);
+		else
+			return (1);
+	}
+	return (0);
+}

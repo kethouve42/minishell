@@ -94,7 +94,7 @@ int	execution3(t_ms *ms_data)
 	if (ft_strncmp(ms_data->data->cmd[0][0], "export", 6, 1) == 0)
 	{
 		if (!ms_data->data->cmd[0][1])
-			return (new_env(ms_data), 1);
+			return (print_export(ms_data), 1);
 		ms_data->envp = new_export(ms_data, ms_data->data->cmd[0][1]);
 		return (1);
 	}

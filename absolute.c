@@ -53,3 +53,16 @@ void	verif_absolute_path(t_ms *ms_data)
 		i++;
 	}
 }
+
+int	verif_cmd_null(t_ms *ms_data)
+{
+	int	i;
+
+	i = -1;
+	while (ms_data->data->cmd[++i])
+	{
+		if (ms_data->data->cmd[i][0] == NULL)
+			return (printf("cmds\n"), 1);
+	}
+	return (0);
+}
